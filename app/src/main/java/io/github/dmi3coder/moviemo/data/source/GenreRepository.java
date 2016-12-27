@@ -7,10 +7,9 @@ import java.util.List;
 import io.github.dmi3coder.moviemo.data.Genre;
 
 public interface GenreRepository {
-    interface LoadGenreCallback{
-        void onGenresLoaded(List<Genre> genres);
 
-        void onGenresError();
+    interface LoadGenreCallback extends BaseCallback{
+        void onGenresLoaded(List<Genre> genres);
     }
 
     void getGenres(@NonNull LoadGenreCallback callback);

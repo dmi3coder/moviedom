@@ -12,7 +12,7 @@ import io.github.dmi3coder.moviemo.data.source.GenreRepository;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
-public class RemoteGenreRepository implements GenreRepository {
+public class RemoteGenreRepository extends RemoteBaseRepository implements GenreRepository {
 
     private interface GenreService{
         @GET("/genre/movie/list"+ Moviemo.API_KEY_QUERY)
@@ -24,8 +24,9 @@ public class RemoteGenreRepository implements GenreRepository {
     private GenreService service;
 
     private RemoteGenreRepository(){
+        super();
         instance.genres = new ArrayList<>();
-        service = Moviemo.getRetrofit().create(GenreService.class);
+        service = retrofit.create(GenreService.class);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class RemoteGenreRepository implements GenreRepository {
             genres = request.execute().body().genres;
             callback.onGenresLoaded(genres);
         } catch (IOException e){
-            callback.onGenresError();
+            callback.onError();
             e.printStackTrace();
         }
     }
@@ -66,5 +67,6 @@ public class RemoteGenreRepository implements GenreRepository {
             this.genres = genres;
         }
     }
+
 
 }
