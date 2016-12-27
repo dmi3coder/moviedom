@@ -1,15 +1,17 @@
 package io.github.dmi3coder.moviemo.data;
 
+import com.google.common.primitives.Booleans;
+import com.google.common.primitives.Doubles;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class Movie {
 
-    private String budget;
+    private Integer budget;
 
     @SerializedName("vote_average")
-    private String voteAverage;
+    private Double voteAverage;
 
     @SerializedName("backdrop_path")
     private String backdropPath;
@@ -18,16 +20,16 @@ public class Movie {
 
     private String status;
 
-    private String runtime;
+    private Integer runtime;
 
     @SerializedName("spoken_languages")
     private List<SpokenLanguage> spokenLanguages;
 
-    private String adult;
+    private Boolean adult;
 
     private String homepage;
 
-    private String id;
+    private Integer id;
 
     @SerializedName("production_countries")
     private List<ProductionCountry> productionCountries;
@@ -51,34 +53,34 @@ public class Movie {
     @SerializedName("original_title")
     private String originalTitle;
     @SerializedName("vote_count")
-    private String voteCount;
+    private Integer voteCount;
     @SerializedName("poster_path")
     private String posterPath;
 
-    private String video;
+    private Boolean video;
 
     private String tagline;
 
-    private String revenue;
+    private Integer revenue;
 
-    private String popularity;
+    private Double popularity;
 
     public Movie() {
     }
 
-    public String getBudget() {
+    public Integer getBudget() {
         return budget;
     }
 
-    public void setBudget(String budget) {
+    public void setBudget(Integer budget) {
         this.budget = budget;
     }
 
-    public String getVoteAverage() {
+    public Double getVoteAverage() {
         return voteAverage;
     }
 
-    public void setVoteAverage(String voteAverage) {
+    public void setVoteAverage(Double voteAverage) {
         this.voteAverage = voteAverage;
     }
 
@@ -106,11 +108,11 @@ public class Movie {
         this.status = status;
     }
 
-    public String getRuntime() {
+    public Integer getRuntime() {
         return runtime;
     }
 
-    public void setRuntime(String runtime) {
+    public void setRuntime(Integer runtime) {
         this.runtime = runtime;
     }
 
@@ -122,11 +124,11 @@ public class Movie {
         this.spokenLanguages = spokenLanguages;
     }
 
-    public String getAdult() {
+    public Boolean getAdult() {
         return adult;
     }
 
-    public void setAdult(String adult) {
+    public void setAdult(Boolean adult) {
         this.adult = adult;
     }
 
@@ -138,11 +140,11 @@ public class Movie {
         this.homepage = homepage;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -218,11 +220,11 @@ public class Movie {
         this.originalTitle = originalTitle;
     }
 
-    public String getVoteCount() {
+    public Integer getVoteCount() {
         return voteCount;
     }
 
-    public void setVoteCount(String voteCount) {
+    public void setVoteCount(Integer voteCount) {
         this.voteCount = voteCount;
     }
 
@@ -234,11 +236,11 @@ public class Movie {
         this.posterPath = posterPath;
     }
 
-    public String getVideo() {
+    public Boolean getVideo() {
         return video;
     }
 
-    public void setVideo(String video) {
+    public void setVideo(Boolean video) {
         this.video = video;
     }
 
@@ -250,19 +252,19 @@ public class Movie {
         this.tagline = tagline;
     }
 
-    public String getRevenue() {
+    public Integer getRevenue() {
         return revenue;
     }
 
-    public void setRevenue(String revenue) {
+    public void setRevenue(Integer revenue) {
         this.revenue = revenue;
     }
 
-    public String getPopularity() {
+    public Double getPopularity() {
         return popularity;
     }
 
-    public void setPopularity(String popularity) {
+    public void setPopularity(Double popularity) {
         this.popularity = popularity;
     }
 }
