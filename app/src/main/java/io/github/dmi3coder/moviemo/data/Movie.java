@@ -1,7 +1,5 @@
 package io.github.dmi3coder.moviemo.data;
 
-import com.google.common.primitives.Booleans;
-import com.google.common.primitives.Doubles;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
