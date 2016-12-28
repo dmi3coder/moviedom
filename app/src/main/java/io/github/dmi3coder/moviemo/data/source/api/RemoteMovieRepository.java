@@ -1,5 +1,6 @@
 package io.github.dmi3coder.moviemo.data.source.api;
 
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -39,17 +40,34 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
         service = retrofit.create(MovieService.class);
     }
 
-
+    @SuppressWarnings("unchecked")
     @Override
-    public void getPopularMovies(int page, @NonNull LoadMovieCallback callback) {
-        Call<MovieList> request = service.getPopularMovies(page);
-        try{
-            Response<MovieList> response = request.execute();
-            Log.d(TAG, "getPopularMovies: "+request.request().url().toString());
+    public void getPopularMovies(final int page, @NonNull final LoadMovieCallback callback) {
+        new AsyncTask<Void,Void,Response<MovieList>>() {
+            @Override
+            protected Response<MovieList> doInBackground(Void... params) {
+                Call<MovieList> request = service.getPopularMovies(page);
+                try{
+                    Response<MovieList> response = request.execute();
+                    Log.d(TAG, "doInBackground: "+response.raw().toString());
+                    return response;
+                }catch (IOException e){
+                    callback.onError();
+                    return null;
+                }
+            }
 
-        }catch (IOException e){
-            callback.onError();
-        }
+            @Override
+            protected void onPostExecute(Response<MovieList> response) {
+                if(response == null) {
+                    callback.onError();
+                    return;
+                }
+                callback.onMovieLoaded(response.body().getResults(),response.body().page);
+            }
+        }.execute();
+
+
     }
 
     @Override

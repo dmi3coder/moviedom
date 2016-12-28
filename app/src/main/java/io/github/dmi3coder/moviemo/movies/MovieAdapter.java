@@ -5,6 +5,7 @@ import android.media.Image;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +26,11 @@ import io.github.dmi3coder.moviemo.data.source.PreviewMovie;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder> {
     LayoutInflater inflater;
+    public List<Movie> movies;
+    private static final String TAG = "MovieAdapter";
 
-    public MovieAdapter(List<PreviewMovie> movies) {
+    public MovieAdapter(List<Movie> movies) {
+        this.movies = movies;
     }
 
     @Override
@@ -39,7 +43,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
     @Override
     public void onBindViewHolder(MovieHolder holder, int position) {
         Glide.with(holder.itemView.getContext())
-                .load("https://upload.wikimedia.org/wikipedia/en/2/29/Movie_poster_for_%22Scary_Movie%22.jpg")
+                .load("http://image.tmdb.org/t/p/w185/"+movies.get(position).getPosterPath())
                 .asBitmap()
                 .into(new BitmapImageViewTarget(holder.image) {
                     @Override
@@ -49,11 +53,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
                         setDrawable(drawable);
                     }
                 });
+        holder.title.setText(movies.get(position).getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        return movies.size();
     }
 
     public class MovieHolder extends RecyclerView.ViewHolder {

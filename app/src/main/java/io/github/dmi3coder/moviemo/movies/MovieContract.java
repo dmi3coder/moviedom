@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.github.dmi3coder.moviemo.BasePresenter;
 import io.github.dmi3coder.moviemo.BaseView;
+import io.github.dmi3coder.moviemo.data.Genre;
 import io.github.dmi3coder.moviemo.data.Movie;
 
 public interface MovieContract {
@@ -18,8 +19,11 @@ public interface MovieContract {
     }
 
     interface Presenter extends BasePresenter{
+
         void result(int requestCode, int resultCode);
 
         void loadMovies();
+
+        void loadMovies(Genre genre);
     }
 }
