@@ -8,6 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.TransparentStatusBar">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
     <style name="FullScreenDialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>

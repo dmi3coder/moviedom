@@ -1,5 +1,6 @@
 package io.github.dmi3coder.moviemo.movies;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
@@ -22,6 +23,7 @@ import java.util.List;
 import io.github.dmi3coder.moviemo.R;
 import io.github.dmi3coder.moviemo.data.Movie;
 import io.github.dmi3coder.moviemo.data.source.PreviewMovie;
+import io.github.dmi3coder.moviemo.description.DescriptionActivity;
 
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder> {
@@ -41,8 +43,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
     }
 
     @Override
-    public void onBindViewHolder(MovieHolder holder, int position) {
-        Glide.with(holder.itemView.getContext())
+    public void onBindViewHolder(final MovieHolder holder, final int position) {
+        final Context context = holder.itemView.getContext();
+        Glide.with(context)
                 .load("http://image.tmdb.org/t/p/w185/"+movies.get(position).getPosterPath())
                 .asBitmap()
                 .into(new BitmapImageViewTarget(holder.image) {
@@ -54,6 +57,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
                     }
                 });
         holder.title.setText(movies.get(position).getTitle());
+        holder.moreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DescriptionActivity.start(context,movies.get(position));
+            }
+        });
     }
 
     @Override

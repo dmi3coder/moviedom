@@ -1,10 +1,14 @@
 package io.github.dmi3coder.moviemo.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Movie {
+public class Movie implements Parcelable {
 
     private Integer budget;
 
@@ -265,4 +269,164 @@ public class Movie {
     public void setPopularity(Double popularity) {
         this.popularity = popularity;
     }
+
+    protected Movie(Parcel in) {
+        budget = in.readByte() == 0x00 ? null : in.readInt();
+        voteAverage = in.readByte() == 0x00 ? null : in.readDouble();
+        backdropPath = in.readString();
+        if (in.readByte() == 0x01) {
+            genres = new ArrayList<Genre>();
+            in.readList(genres, Genre.class.getClassLoader());
+        } else {
+            genres = null;
+        }
+        status = in.readString();
+        runtime = in.readByte() == 0x00 ? null : in.readInt();
+        if (in.readByte() == 0x01) {
+            spokenLanguages = new ArrayList<SpokenLanguage>();
+            in.readList(spokenLanguages, SpokenLanguage.class.getClassLoader());
+        } else {
+            spokenLanguages = null;
+        }
+        byte adultVal = in.readByte();
+        adult = adultVal == 0x02 ? null : adultVal != 0x00;
+        homepage = in.readString();
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        if (in.readByte() == 0x01) {
+            productionCountries = new ArrayList<ProductionCountry>();
+            in.readList(productionCountries, ProductionCountry.class.getClassLoader());
+        } else {
+            productionCountries = null;
+        }
+        title = in.readString();
+        originalLanguage = in.readString();
+        overview = in.readString();
+        if (in.readByte() == 0x01) {
+            productionCompanies = new ArrayList<ProductionCompany>();
+            in.readList(productionCompanies, ProductionCompany.class.getClassLoader());
+        } else {
+            productionCompanies = null;
+        }
+        collection = (Collection) in.readValue(Collection.class.getClassLoader());
+        imdb_id = in.readString();
+        releaseDate = in.readString();
+        originalTitle = in.readString();
+        voteCount = in.readByte() == 0x00 ? null : in.readInt();
+        posterPath = in.readString();
+        byte videoVal = in.readByte();
+        video = videoVal == 0x02 ? null : videoVal != 0x00;
+        tagline = in.readString();
+        revenue = in.readByte() == 0x00 ? null : in.readInt();
+        popularity = in.readByte() == 0x00 ? null : in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (budget == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(budget);
+        }
+        if (voteAverage == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(voteAverage);
+        }
+        dest.writeString(backdropPath);
+        if (genres == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(genres);
+        }
+        dest.writeString(status);
+        if (runtime == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(runtime);
+        }
+        if (spokenLanguages == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(spokenLanguages);
+        }
+        if (adult == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (adult ? 0x01 : 0x00));
+        }
+        dest.writeString(homepage);
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        if (productionCountries == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(productionCountries);
+        }
+        dest.writeString(title);
+        dest.writeString(originalLanguage);
+        dest.writeString(overview);
+        if (productionCompanies == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(productionCompanies);
+        }
+        dest.writeValue(collection);
+        dest.writeString(imdb_id);
+        dest.writeString(releaseDate);
+        dest.writeString(originalTitle);
+        if (voteCount == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(voteCount);
+        }
+        dest.writeString(posterPath);
+        if (video == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (video ? 0x01 : 0x00));
+        }
+        dest.writeString(tagline);
+        if (revenue == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(revenue);
+        }
+        if (popularity == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(popularity);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }
