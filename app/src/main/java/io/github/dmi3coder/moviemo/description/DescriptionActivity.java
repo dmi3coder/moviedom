@@ -47,7 +47,7 @@ public class DescriptionActivity extends AppCompatActivity {
         toolbar.setTitle(movie.getTitle());
         Glide.with(this).load("http://image.tmdb.org/t/p/w500/"+movie.getPosterPath()).into(posterImage);
         if(!movie.getAdult()) adultText.setVisibility(View.GONE);
-        overviewText.setText(movie.getOverview());
+        overviewText.setText(movie.getOverview()+movie.getOverview()+movie.getOverview()+movie.getOverview());
         rateText.setText(String.format("%s",movie.getVoteAverage()));
 
 
