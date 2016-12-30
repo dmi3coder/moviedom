@@ -11,9 +11,12 @@ import io.github.dmi3coder.moviemo.Moviemo;
 import io.github.dmi3coder.moviemo.data.Genre;
 import io.github.dmi3coder.moviemo.data.Movie;
 import io.github.dmi3coder.moviemo.data.source.MovieRepository;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Query;
 
 public class RemoteMovieRepository extends RemoteBaseRepository implements MovieRepository {
@@ -46,9 +49,10 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
         new AsyncTask<Void,Void,Response<MovieList>>() {
             @Override
             protected Response<MovieList> doInBackground(Void... params) {
-                Call<MovieList> request = service.getPopularMovies(page);
+                Call<MovieList> call = service.getPopularMovies(page);
+
                 try{
-                    Response<MovieList> response = request.execute();
+                    Response<MovieList> response = call.execute();
                     Log.d(TAG, "doInBackground: "+response.raw().toString());
                     return response;
                 }catch (IOException e){
@@ -63,7 +67,7 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
                     callback.onError();
                     return;
                 }
-                callback.onMovieLoaded(response.body().getResults(),response.body().page);
+                callback.onMovieLoaded(response.body(),response.body().page,response.raw());
             }
         }.execute();
 
@@ -72,6 +76,35 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
 
     @Override
     public void getMoviesByGenre(Genre genre, @NonNull LoadMovieCallback callback) {
+
+    }
+
+    @Override
+    public void getNextPage(final Request request, final LoadMovieCallback callback) {
+        HttpUrl.Builder builder = request.url().newBuilder();
+        builder.setQueryParameter("page",2+"");
+        final Request newRequest = request.newBuilder().url(builder.build()).build();
+
+        new AsyncTask<Void,Void,MovieList>() {
+            okhttp3.Response response;
+            @Override
+            protected MovieList doInBackground(Void... params) {
+                try {
+
+                    response = client.newCall(newRequest).execute();
+                    MovieList list = gson.fromJson(response.body().string(),MovieList.class);
+                    return list;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(MovieList movieList) {
+                callback.onMovieLoaded(movieList,2,response);
+            }
+        }.execute();
 
     }
 

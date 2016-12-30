@@ -2,6 +2,7 @@ package io.github.dmi3coder.moviemo.movies;
 
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.List;
 
@@ -9,11 +10,14 @@ import io.github.dmi3coder.moviemo.data.Genre;
 import io.github.dmi3coder.moviemo.data.Movie;
 import io.github.dmi3coder.moviemo.data.source.MovieRepository;
 import io.github.dmi3coder.moviemo.data.source.api.RemoteMovieRepository;
+import okhttp3.Request;
+import retrofit2.Response;
 
 public class MoviePresenter implements MovieContract.Presenter {
-
+    private static final String TAG = "MoviePresenter";
     private MovieRepository repository;
     private MovieContract.View view;
+    protected okhttp3.Response currentResponse;
 
     public MoviePresenter(@NonNull MovieContract.View view) {
         this.view = view;
@@ -27,11 +31,11 @@ public class MoviePresenter implements MovieContract.Presenter {
     }
 
     @Override
-    public void loadMovies() {
-        repository.getPopularMovies(1, new MovieRepository.LoadMovieCallback() {
+    public void loadMore() {
+        repository.getNextPage(currentResponse.request(), new MovieRepository.LoadMovieCallback() {
             @Override
-            public void onMovieLoaded(List<Movie> movies, int page) {
-                view.showMovies(movies);
+            public void onMovieLoaded(RemoteMovieRepository.MovieList movies, int page, okhttp3.Response response) {
+                view.addMoreMovies(movies.getResults());
             }
 
             @Override
@@ -40,6 +44,24 @@ public class MoviePresenter implements MovieContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void loadMovies() {
+        repository.getPopularMovies(1, new MovieRepository.LoadMovieCallback() {
+            @Override
+            public void onMovieLoaded(RemoteMovieRepository.MovieList movies, int page, okhttp3.Response response) {
+                view.showMovies(movies.getResults());
+                currentResponse = response;
+                loadMore();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+
 
 
     @Override

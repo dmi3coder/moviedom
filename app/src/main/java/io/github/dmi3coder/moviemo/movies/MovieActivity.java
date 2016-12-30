@@ -19,7 +19,7 @@ public class MovieActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 12/29/16 add search action
+                new MovieSearchDialog().show(getSupportFragmentManager(),"tag");
             }
         });
         MovieListFragment fragment = new MovieListFragment();

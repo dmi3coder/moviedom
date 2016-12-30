@@ -58,6 +58,12 @@ public class MovieListFragment extends Fragment implements MovieContract.View{
     }
 
     @Override
+    public void addMoreMovies(List<Movie> moviesToAdd) {
+        adapter.movies.addAll(moviesToAdd);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void setPresenter(MovieContract.Presenter presenter) {
 
     }

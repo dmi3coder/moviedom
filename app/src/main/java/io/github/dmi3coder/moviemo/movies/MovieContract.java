@@ -16,11 +16,14 @@ public interface MovieContract {
 
         void save();
         boolean isActive();
+        void addMoreMovies(List<Movie> moviesToAdd);
     }
 
     interface Presenter extends BasePresenter{
 
         void result(int requestCode, int resultCode);
+
+        void loadMore();
 
         void loadMovies();
 

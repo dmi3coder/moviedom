@@ -49,4 +49,7 @@ public class Moviemo extends Application {
         return gson;
     }
 
+    public static OkHttpClient getClient() {
+        return client;
+    }
 }
