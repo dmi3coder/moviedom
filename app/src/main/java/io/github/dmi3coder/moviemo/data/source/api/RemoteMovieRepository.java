@@ -67,7 +67,7 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
                     callback.onError();
                     return;
                 }
-                callback.onMovieLoaded(response.body(),response.body().page,response.raw());
+                callback.onMovieLoaded(response.body(),response.raw());
             }
         }.execute();
 
@@ -82,7 +82,8 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
     @Override
     public void getNextPage(final Request request, final LoadMovieCallback callback) {
         HttpUrl.Builder builder = request.url().newBuilder();
-        builder.setQueryParameter("page",2+"");
+        int nextPage = Integer.parseInt(request.url().queryParameter("page"));
+        builder.setQueryParameter("page",++nextPage+"");
         final Request newRequest = request.newBuilder().url(builder.build()).build();
 
         new AsyncTask<Void,Void,MovieList>() {
@@ -90,7 +91,6 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
             @Override
             protected MovieList doInBackground(Void... params) {
                 try {
-
                     response = client.newCall(newRequest).execute();
                     MovieList list = gson.fromJson(response.body().string(),MovieList.class);
                     return list;
@@ -102,7 +102,7 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
 
             @Override
             protected void onPostExecute(MovieList movieList) {
-                callback.onMovieLoaded(movieList,2,response);
+                callback.onMovieLoaded(movieList,response);
             }
         }.execute();
 

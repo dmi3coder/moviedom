@@ -13,7 +13,7 @@ import okhttp3.Response;
 public interface MovieRepository {
 
     public interface LoadMovieCallback extends BaseCallback{
-        void onMovieLoaded(RemoteMovieRepository.MovieList movies, int page,Response response);
+        void onMovieLoaded(RemoteMovieRepository.MovieList movies,Response response);
     }
 
     void getPopularMovies(int page,@NonNull LoadMovieCallback callback);

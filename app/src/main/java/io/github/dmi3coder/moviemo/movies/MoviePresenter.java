@@ -34,8 +34,9 @@ public class MoviePresenter implements MovieContract.Presenter {
     public void loadMore() {
         repository.getNextPage(currentResponse.request(), new MovieRepository.LoadMovieCallback() {
             @Override
-            public void onMovieLoaded(RemoteMovieRepository.MovieList movies, int page, okhttp3.Response response) {
+            public void onMovieLoaded(RemoteMovieRepository.MovieList movies, okhttp3.Response response) {
                 view.addMoreMovies(movies.getResults());
+                currentResponse = response;
             }
 
             @Override
@@ -49,10 +50,9 @@ public class MoviePresenter implements MovieContract.Presenter {
     public void loadMovies() {
         repository.getPopularMovies(1, new MovieRepository.LoadMovieCallback() {
             @Override
-            public void onMovieLoaded(RemoteMovieRepository.MovieList movies, int page, okhttp3.Response response) {
+            public void onMovieLoaded(RemoteMovieRepository.MovieList movies, okhttp3.Response response) {
                 view.showMovies(movies.getResults());
                 currentResponse = response;
-                loadMore();
             }
 
             @Override
