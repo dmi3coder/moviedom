@@ -95,14 +95,17 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
                     MovieList list = gson.fromJson(response.body().string(),MovieList.class);
                     return list;
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    return null;
                 }
-                return null;
             }
 
             @Override
             protected void onPostExecute(MovieList movieList) {
-                callback.onMovieLoaded(movieList,response);
+                if(movieList == null) {
+                    callback.onError();
+                }else {
+                    callback.onMovieLoaded(movieList, response);
+                }
             }
         }.execute();
 

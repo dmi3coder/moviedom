@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import io.github.dmi3coder.moviemo.data.Movie;
 public class MovieListFragment extends Fragment implements MovieContract.View {
     private static final String TAG = "MovieListFragment";
     private RecyclerView recyclerView;
+    private TextView emptyText;
     private LinearLayoutManager manager;
     private MovieAdapter adapter;
     private boolean loading = false;
@@ -33,8 +35,10 @@ public class MovieListFragment extends Fragment implements MovieContract.View {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_movies,container,false);
+        recyclerView = (RecyclerView) v.findViewById(R.id.list);
+        emptyText = (TextView) v.findViewById(R.id.text_empty);
 
-        recyclerView = new RecyclerView(getContext());
         progressDialog = new ProgressDialog(getContext(),ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
 
@@ -62,8 +66,7 @@ public class MovieListFragment extends Fragment implements MovieContract.View {
                 }
             }
         });
-        // TODO: 12/28/16 show empty view/loading
-        return recyclerView;
+        return v;
     }
 
     @Override
@@ -76,11 +79,29 @@ public class MovieListFragment extends Fragment implements MovieContract.View {
         adapter.movies = movies;
         adapter.notifyDataSetChanged();
         progressDialog.cancel();
-
+        resetVisibility();
     }
 
     @Override
     public void showSearch() {
+
+    }
+
+    @Override
+    public void setEmpty() {
+        recyclerView.setVisibility(View.GONE);
+        emptyText.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setError(String error) {
+        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+        progressDialog.cancel();
+    }
+
+    private void resetVisibility(){
+        recyclerView.setVisibility(View.VISIBLE);
+        emptyText.setVisibility(View.GONE);
 
     }
 

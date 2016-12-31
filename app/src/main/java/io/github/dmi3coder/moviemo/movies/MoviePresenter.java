@@ -3,6 +3,7 @@ package io.github.dmi3coder.moviemo.movies;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class MoviePresenter implements MovieContract.Presenter {
 
             @Override
             public void onError() {
-
+                view.setError("Can't load more");
             }
         });
     }
@@ -57,7 +58,7 @@ public class MoviePresenter implements MovieContract.Presenter {
 
             @Override
             public void onError() {
-
+                view.setEmpty();
             }
         });
     }

@@ -14,6 +14,9 @@ public interface MovieContract {
         void showMovies(List<Movie> movies);
         void showSearch();
 
+        void setEmpty();
+        void setError(String error);
+
         void save();
         boolean isActive();
         void addMoreMovies(List<Movie> moviesToAdd);
