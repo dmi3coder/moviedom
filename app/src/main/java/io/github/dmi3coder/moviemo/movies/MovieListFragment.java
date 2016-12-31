@@ -1,5 +1,8 @@
 package io.github.dmi3coder.moviemo.movies;
 
+import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +20,7 @@ import java.util.List;
 import io.github.dmi3coder.moviemo.R;
 import io.github.dmi3coder.moviemo.data.Movie;
 
-public class MovieListFragment extends Fragment implements MovieContract.View{
+public class MovieListFragment extends Fragment implements MovieContract.View {
     private static final String TAG = "MovieListFragment";
     private RecyclerView recyclerView;
     private LinearLayoutManager manager;
@@ -25,12 +28,15 @@ public class MovieListFragment extends Fragment implements MovieContract.View{
     private boolean loading = false;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private MovieContract.Presenter presenter;
+    private ProgressDialog progressDialog;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         recyclerView = new RecyclerView(getContext());
+        progressDialog = new ProgressDialog(getContext(),ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.show();
 
         manager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(manager);
@@ -41,20 +47,16 @@ public class MovieListFragment extends Fragment implements MovieContract.View{
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if(dy > 0)
-                {
-                   int  visibleItemCount = manager.getChildCount();
+                if (dy > 0) {
+                    visibleItemCount = manager.getChildCount();
 
                     totalItemCount = manager.getItemCount();
                     pastVisiblesItems = manager.findFirstVisibleItemPosition();
-                    Log.d(TAG, "onScrolled: "+pastVisiblesItems);
-                    if (!loading)
-                    {
-                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
-                        {
+                    if (!loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                             loading = true;
                             presenter.loadMore();
-                            Toast.makeText(getContext(), "loading new ;)", Toast.LENGTH_SHORT).show();
+                            progressDialog.show();
                         }
                     }
                 }
@@ -73,6 +75,7 @@ public class MovieListFragment extends Fragment implements MovieContract.View{
     public void showMovies(List<Movie> movies) {
         adapter.movies = movies;
         adapter.notifyDataSetChanged();
+        progressDialog.cancel();
 
     }
 
@@ -96,6 +99,7 @@ public class MovieListFragment extends Fragment implements MovieContract.View{
         adapter.movies.addAll(moviesToAdd);
         adapter.notifyDataSetChanged();
         loading = false;
+        progressDialog.cancel();
     }
 
     @Override
