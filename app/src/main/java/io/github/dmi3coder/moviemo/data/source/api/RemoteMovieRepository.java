@@ -24,8 +24,10 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
     private MovieService service;
     private static final String TAG = "RemoteMovieRepository";
     private interface MovieService {
-        @GET("movie/popular" + Moviemo.API_KEY_QUERY)
+        @GET("movie/popular")
         Call<MovieList> getPopularMovies(@Query("page") Integer page);
+        @GET("search/movie")
+        Call<MovieList> getMovies(@Query("query") String query,@Query("page") Integer page);
 
     }
 
@@ -77,6 +79,31 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
     @Override
     public void getMoviesByGenre(Genre genre, @NonNull LoadMovieCallback callback) {
 
+    }
+
+    @Override
+    public void getMoviesByQuery(final String query, @NonNull final LoadMovieCallback callback) {
+        new AsyncTask<Void,Void,Response<MovieList>>(){
+            @Override
+            protected Response<MovieList> doInBackground(Void... params) {
+                Call<MovieList> call = service.getMovies(query,1);
+                try {
+                    Response<MovieList> response = call.execute();
+                    return response;
+                } catch (IOException e) {
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Response<MovieList> response) {
+                if(response.body().getResults() == null){
+                    callback.onError();
+                }else {
+                    callback.onMovieLoaded(response.body(),response.raw());
+                }
+            }
+        }.execute();
     }
 
     @Override

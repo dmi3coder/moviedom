@@ -1,6 +1,7 @@
 package io.github.dmi3coder.moviemo.data.source;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.StringDef;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public interface MovieRepository {
     void getPopularMovies(int page,@NonNull LoadMovieCallback callback);
 
     void getMoviesByGenre(Genre genre, @NonNull LoadMovieCallback callback);
+
+    void getMoviesByQuery(String query, @NonNull LoadMovieCallback callback);
 
     void getNextPage(Request request, LoadMovieCallback callback);
 

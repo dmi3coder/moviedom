@@ -30,6 +30,8 @@ public interface MovieContract {
 
         void loadMovies();
 
+        void searchByTitle(String title);
+
         void loadMovies(Genre genre);
     }
 }

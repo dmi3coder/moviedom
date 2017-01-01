@@ -6,12 +6,17 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.List;
 
 import io.github.dmi3coder.moviemo.data.Movie;
 import io.github.dmi3coder.moviemo.data.source.MovieRepository;
 import io.github.dmi3coder.moviemo.data.source.api.RemoteMovieRepository;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -25,6 +30,15 @@ public class Moviemo extends Application {
     private static Gson gson;
     private static Retrofit retrofit;
     private static OkHttpClient client;
+    private static Interceptor interceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request.Builder requestBuilder = chain.request().newBuilder();
+            HttpUrl.Builder url = chain.request().url().newBuilder();
+            url.addQueryParameter("api_key",API_KEY);
+            return chain.proceed(requestBuilder.url(url.build()).build());
+        }
+    };
 
     private static final String TAG = "Moviemo";
 
@@ -32,7 +46,7 @@ public class Moviemo extends Application {
     public void onCreate() {
         super.onCreate();
         gson = new GsonBuilder().create();
-        client = new OkHttpClient();
+        client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(API_URL)

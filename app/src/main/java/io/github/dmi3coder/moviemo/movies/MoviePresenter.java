@@ -18,7 +18,7 @@ public class MoviePresenter implements MovieContract.Presenter {
     private static final String TAG = "MoviePresenter";
     private MovieRepository repository;
     private MovieContract.View view;
-    protected okhttp3.Response currentResponse;
+    private okhttp3.Response currentResponse;
 
     public MoviePresenter(@NonNull MovieContract.View view) {
         this.view = view;
@@ -63,6 +63,21 @@ public class MoviePresenter implements MovieContract.Presenter {
         });
     }
 
+    @Override
+    public void searchByTitle(String title) {
+        repository.getMoviesByQuery(title, new MovieRepository.LoadMovieCallback() {
+            @Override
+            public void onMovieLoaded(RemoteMovieRepository.MovieList movies, okhttp3.Response response) {
+                view.showMovies(movies.getResults());
+                currentResponse = response;
+            }
+
+            @Override
+            public void onError() {
+                view.setEmpty();
+            }
+        });
+    }
 
 
     @Override
