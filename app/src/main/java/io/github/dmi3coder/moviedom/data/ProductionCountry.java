@@ -1,4 +1,4 @@
-package io.github.dmi3coder.moviemo.data;
+package io.github.dmi3coder.moviedom.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

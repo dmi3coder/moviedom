@@ -1,17 +1,12 @@
-package io.github.dmi3coder.moviemo;
+package io.github.dmi3coder.moviedom;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
-import java.util.List;
 
-import io.github.dmi3coder.moviemo.data.Movie;
-import io.github.dmi3coder.moviemo.data.source.MovieRepository;
-import io.github.dmi3coder.moviemo.data.source.api.RemoteMovieRepository;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;

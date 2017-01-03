@@ -1,13 +1,11 @@
-package io.github.dmi3coder.moviemo.movies;
+package io.github.dmi3coder.moviedom.movies;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +19,8 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.List;
 
-import io.github.dmi3coder.moviemo.R;
-import io.github.dmi3coder.moviemo.data.Movie;
-import io.github.dmi3coder.moviemo.data.source.PreviewMovie;
-import io.github.dmi3coder.moviemo.description.DescriptionActivity;
+import io.github.dmi3coder.moviedom.R;
+import io.github.dmi3coder.moviedom.data.Movie;
 
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder> {

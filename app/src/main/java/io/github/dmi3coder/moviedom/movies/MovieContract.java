@@ -1,11 +1,11 @@
-package io.github.dmi3coder.moviemo.movies;
+package io.github.dmi3coder.moviedom.movies;
 
 import java.util.List;
 
-import io.github.dmi3coder.moviemo.BasePresenter;
-import io.github.dmi3coder.moviemo.BaseView;
-import io.github.dmi3coder.moviemo.data.Genre;
-import io.github.dmi3coder.moviemo.data.Movie;
+import io.github.dmi3coder.moviedom.BasePresenter;
+import io.github.dmi3coder.moviedom.BaseView;
+import io.github.dmi3coder.moviedom.data.Genre;
+import io.github.dmi3coder.moviedom.data.Movie;
 
 public interface MovieContract {
 

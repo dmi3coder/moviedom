@@ -1,4 +1,4 @@
-package io.github.dmi3coder.moviemo.data.source.api;
+package io.github.dmi3coder.moviedom.data.source.api;
 
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -7,9 +7,9 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.List;
 
-import io.github.dmi3coder.moviemo.data.Genre;
-import io.github.dmi3coder.moviemo.data.Movie;
-import io.github.dmi3coder.moviemo.data.source.MovieRepository;
+import io.github.dmi3coder.moviedom.data.Genre;
+import io.github.dmi3coder.moviedom.data.Movie;
+import io.github.dmi3coder.moviedom.data.source.MovieRepository;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import retrofit2.Call;

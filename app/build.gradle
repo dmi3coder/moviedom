@@ -8,7 +8,7 @@ android {
         abortOnError false
     }
     defaultConfig {
-        applicationId "io.github.dmi3coder.moviemo"
+        applicationId "io.github.dmi3coder.moviedom"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1

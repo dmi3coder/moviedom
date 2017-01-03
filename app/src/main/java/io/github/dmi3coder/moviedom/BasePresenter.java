@@ -1,4 +1,4 @@
-package io.github.dmi3coder.moviemo;
+package io.github.dmi3coder.moviedom;
 
 public interface BasePresenter {
 

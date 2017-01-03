@@ -1,4 +1,4 @@
-package io.github.dmi3coder.moviemo.movies;
+package io.github.dmi3coder.moviedom.movies;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.ViewGroup;
 
-import io.github.dmi3coder.moviemo.R;
+import io.github.dmi3coder.moviedom.R;
 
 public class MovieSearchDialog extends DialogFragment {
 

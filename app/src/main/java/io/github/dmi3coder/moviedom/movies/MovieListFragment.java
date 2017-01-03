@@ -1,4 +1,4 @@
-package io.github.dmi3coder.moviemo.movies;
+package io.github.dmi3coder.moviedom.movies;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -15,9 +15,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.dmi3coder.moviemo.R;
-import io.github.dmi3coder.moviemo.data.Movie;
-import io.github.dmi3coder.moviemo.description.DescriptionActivity;
+import io.github.dmi3coder.moviedom.R;
+import io.github.dmi3coder.moviedom.data.Movie;
+import io.github.dmi3coder.moviedom.description.DescriptionActivity;
 
 public class MovieListFragment extends Fragment implements MovieContract.View {
     private static final String TAG = "MovieListFragment";

@@ -1,15 +1,12 @@
-package io.github.dmi3coder.moviemo.data.source.api;
+package io.github.dmi3coder.moviedom.data.source.api;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.dmi3coder.moviemo.Moviemo;
-import io.github.dmi3coder.moviemo.data.Genre;
-import io.github.dmi3coder.moviemo.data.source.GenreRepository;
+import io.github.dmi3coder.moviedom.data.Genre;
+import io.github.dmi3coder.moviedom.data.source.GenreRepository;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.GET;

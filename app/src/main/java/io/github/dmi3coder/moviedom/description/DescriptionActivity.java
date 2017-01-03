@@ -1,8 +1,7 @@
-package io.github.dmi3coder.moviemo.description;
+package io.github.dmi3coder.moviedom.description;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +12,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import io.github.dmi3coder.moviemo.R;
-import io.github.dmi3coder.moviemo.data.Movie;
+import io.github.dmi3coder.moviedom.R;
+import io.github.dmi3coder.moviedom.data.Movie;
 
 public class DescriptionActivity extends AppCompatActivity {
     public static final String EXTRA_MOVIE = "io.github.dmi3coder.moviemo.EXTRA_MOVIE";

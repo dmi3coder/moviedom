@@ -1,10 +1,8 @@
-package io.github.dmi3coder.moviemo.data.source;
-
-import android.support.annotation.NonNull;
+package io.github.dmi3coder.moviedom.data.source;
 
 import java.util.List;
 
-import io.github.dmi3coder.moviemo.data.Genre;
+import io.github.dmi3coder.moviedom.data.Genre;
 
 public interface GenreRepository {
 

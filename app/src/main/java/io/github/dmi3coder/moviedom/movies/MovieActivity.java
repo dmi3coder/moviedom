@@ -1,4 +1,4 @@
-package io.github.dmi3coder.moviemo.movies;
+package io.github.dmi3coder.moviedom.movies;
 
 import android.content.DialogInterface;
 import android.support.design.widget.FloatingActionButton;
@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import io.github.dmi3coder.moviemo.R;
+import io.github.dmi3coder.moviedom.R;
 
 public class MovieActivity extends AppCompatActivity {
     MoviePresenter presenter;
@@ -42,7 +42,7 @@ public class MovieActivity extends AppCompatActivity {
                                 String text = input.getText().toString();
                                 if(text.isEmpty()) {
                                     presenter.loadMovies();
-                                    toolbarTitle.setText("MOVIEMO");
+                                    toolbarTitle.setText("moviedom");
                                 }
                                 else presenter.searchByTitle(input.getText().toString());
                             }

@@ -1,10 +1,10 @@
-package io.github.dmi3coder.moviemo.data.source;
+package io.github.dmi3coder.moviedom.data.source;
 
 import android.support.annotation.NonNull;
 
-import io.github.dmi3coder.moviemo.data.Genre;
-import io.github.dmi3coder.moviemo.data.Movie;
-import io.github.dmi3coder.moviemo.data.source.api.RemoteMovieRepository;
+import io.github.dmi3coder.moviedom.data.Genre;
+import io.github.dmi3coder.moviedom.data.Movie;
+import io.github.dmi3coder.moviedom.data.source.api.RemoteMovieRepository;
 import okhttp3.Request;
 import okhttp3.Response;
 
