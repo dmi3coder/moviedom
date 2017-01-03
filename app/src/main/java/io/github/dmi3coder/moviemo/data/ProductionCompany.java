@@ -1,6 +1,9 @@
 package io.github.dmi3coder.moviemo.data;
 
-public class ProductionCompany {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ProductionCompany implements Parcelable {
 
     private String id;
 
@@ -31,4 +34,33 @@ public class ProductionCompany {
     {
         return "ClassPojo [id = "+id+", name = "+name+"]";
     }
+
+    protected ProductionCompany(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<ProductionCompany> CREATOR = new Parcelable.Creator<ProductionCompany>() {
+        @Override
+        public ProductionCompany createFromParcel(Parcel in) {
+            return new ProductionCompany(in);
+        }
+
+        @Override
+        public ProductionCompany[] newArray(int size) {
+            return new ProductionCompany[size];
+        }
+    };
 }

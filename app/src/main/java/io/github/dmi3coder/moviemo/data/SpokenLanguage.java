@@ -1,6 +1,9 @@
 package io.github.dmi3coder.moviemo.data;
 
-public class SpokenLanguage {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class SpokenLanguage implements Parcelable {
 
     private String iso_639_1;
 
@@ -31,4 +34,33 @@ public class SpokenLanguage {
     {
         return "ClassPojo [iso_639_1 = "+iso_639_1+", name = "+name+"]";
     }
+
+    protected SpokenLanguage(Parcel in) {
+        iso_639_1 = in.readString();
+        name = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(iso_639_1);
+        dest.writeString(name);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<SpokenLanguage> CREATOR = new Parcelable.Creator<SpokenLanguage>() {
+        @Override
+        public SpokenLanguage createFromParcel(Parcel in) {
+            return new SpokenLanguage(in);
+        }
+
+        @Override
+        public SpokenLanguage[] newArray(int size) {
+            return new SpokenLanguage[size];
+        }
+    };
 }

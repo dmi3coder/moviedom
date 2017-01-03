@@ -1,6 +1,9 @@
 package io.github.dmi3coder.moviemo.data;
 
-public class Collection {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Collection implements Parcelable {
 
     private String id;
 
@@ -55,4 +58,37 @@ public class Collection {
     {
         return "ClassPojo [id = "+id+", backdrop_path = "+backdrop_path+", name = "+name+", poster_path = "+poster_path+"]";
     }
+
+    protected Collection(Parcel in) {
+        id = in.readString();
+        backdrop_path = in.readString();
+        name = in.readString();
+        poster_path = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(backdrop_path);
+        dest.writeString(name);
+        dest.writeString(poster_path);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Collection> CREATOR = new Parcelable.Creator<Collection>() {
+        @Override
+        public Collection createFromParcel(Parcel in) {
+            return new Collection(in);
+        }
+
+        @Override
+        public Collection[] newArray(int size) {
+            return new Collection[size];
+        }
+    };
 }
