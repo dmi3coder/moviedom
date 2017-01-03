@@ -1,6 +1,7 @@
 package io.github.dmi3coder.moviemo.movies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
@@ -59,6 +60,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
                         setDrawable(drawable);
                     }
                 });
+        holder.shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, String.format("Hello! I found awesome movie \"%s\" via Moviemo",movie.getTitle()));
+                sendIntent.setType("text/plain");
+                context.startActivity(sendIntent);
+            }
+        });
+
         holder.title.setText(movie.getTitle());
         holder.genre.setText(movie.getVoteAverage().toString());
         holder.moreButton.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +92,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
         private TextView title;
         private Button moreButton;
         private ImageView shareButton;
-        private ImageView likeButton;
 
         public MovieHolder(View v) {
             super(v);
@@ -88,6 +99,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
             genre = ((TextView) v.findViewById(R.id.genre));
             title = ((TextView) v.findViewById(R.id.title));
             moreButton = ((Button) v.findViewById(R.id.button));
+            shareButton = ((ImageView) v.findViewById(R.id.share));
         }
     }
 }
