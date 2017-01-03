@@ -57,11 +57,12 @@ public class MoviePresenter implements MovieContract.Presenter {
     }
 
     @Override
-    public void searchByTitle(String title) {
+    public void searchByTitle(final String title) {
         repository.getMoviesByQuery(title, new MovieRepository.LoadMoviesCallback() {
             @Override
             public void onMoviesLoaded(RemoteMovieRepository.MovieList movies, okhttp3.Response response) {
                 view.showMovies(movies.getResults());
+                view.setTitle(title);
                 currentResponse = response;
             }
 
