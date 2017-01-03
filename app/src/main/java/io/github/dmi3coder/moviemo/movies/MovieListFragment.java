@@ -1,14 +1,11 @@
 package io.github.dmi3coder.moviemo.movies;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +17,7 @@ import java.util.List;
 
 import io.github.dmi3coder.moviemo.R;
 import io.github.dmi3coder.moviemo.data.Movie;
+import io.github.dmi3coder.moviemo.description.DescriptionActivity;
 
 public class MovieListFragment extends Fragment implements MovieContract.View {
     private static final String TAG = "MovieListFragment";
@@ -44,7 +42,7 @@ public class MovieListFragment extends Fragment implements MovieContract.View {
 
         manager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(manager);
-        adapter = new MovieAdapter(new ArrayList<Movie>());
+        adapter = new MovieAdapter(new ArrayList<Movie>(), presenter);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -97,6 +95,11 @@ public class MovieListFragment extends Fragment implements MovieContract.View {
     public void setError(String error) {
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
         progressDialog.cancel();
+    }
+
+    @Override
+    public void showMovie(Movie movie) {
+        DescriptionActivity.start(getContext(),movie);
     }
 
     private void resetVisibility(){

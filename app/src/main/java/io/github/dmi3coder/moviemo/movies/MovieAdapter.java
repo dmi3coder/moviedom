@@ -30,9 +30,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
     LayoutInflater inflater;
     public List<Movie> movies;
     private static final String TAG = "MovieAdapter";
+    private MovieContract.Presenter presenter;
 
-    public MovieAdapter(List<Movie> movies) {
+    public MovieAdapter(List<Movie> movies, MovieContract.Presenter presenter) {
         this.movies = movies;
+        this.presenter = presenter;
     }
 
     @Override
@@ -45,8 +47,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
     @Override
     public void onBindViewHolder(final MovieHolder holder, final int position) {
         final Context context = holder.itemView.getContext();
+        final Movie movie = movies.get(position);
         Glide.with(context)
-                .load("http://image.tmdb.org/t/p/w185/"+movies.get(position).getPosterPath())
+                .load("http://image.tmdb.org/t/p/w185/"+movie.getPosterPath())
                 .asBitmap()
                 .into(new BitmapImageViewTarget(holder.image) {
                     @Override
@@ -56,11 +59,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
                         setDrawable(drawable);
                     }
                 });
-        holder.title.setText(movies.get(position).getTitle());
+        holder.title.setText(movie.getTitle());
+        holder.genre.setText(movie.getVoteAverage().toString());
         holder.moreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DescriptionActivity.start(context,movies.get(position));
+                presenter.loadMovie(movie.getId()+"");
             }
         });
     }

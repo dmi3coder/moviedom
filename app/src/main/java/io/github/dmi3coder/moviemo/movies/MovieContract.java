@@ -16,6 +16,7 @@ public interface MovieContract {
 
         void setEmpty();
         void setError(String error);
+        void showMovie(Movie movie);
 
         void save();
         boolean isActive();
@@ -31,6 +32,7 @@ public interface MovieContract {
         void loadMovies();
 
         void searchByTitle(String title);
+        void loadMovie(String movieId);
 
         void loadMovies(Genre genre);
     }

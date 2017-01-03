@@ -1,18 +1,11 @@
 package io.github.dmi3coder.moviemo.movies;
 
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.widget.Toast;
-
-import java.util.List;
 
 import io.github.dmi3coder.moviemo.data.Genre;
 import io.github.dmi3coder.moviemo.data.Movie;
 import io.github.dmi3coder.moviemo.data.source.MovieRepository;
 import io.github.dmi3coder.moviemo.data.source.api.RemoteMovieRepository;
-import okhttp3.Request;
-import retrofit2.Response;
 
 public class MoviePresenter implements MovieContract.Presenter {
     private static final String TAG = "MoviePresenter";
@@ -33,9 +26,9 @@ public class MoviePresenter implements MovieContract.Presenter {
 
     @Override
     public void loadMore() {
-        repository.getNextPage(currentResponse.request(), new MovieRepository.LoadMovieCallback() {
+        repository.getNextPage(currentResponse.request(), new MovieRepository.LoadMoviesCallback() {
             @Override
-            public void onMovieLoaded(RemoteMovieRepository.MovieList movies, okhttp3.Response response) {
+            public void onMoviesLoaded(RemoteMovieRepository.MovieList movies, okhttp3.Response response) {
                 view.addMoreMovies(movies.getResults());
                 currentResponse = response;
             }
@@ -49,9 +42,9 @@ public class MoviePresenter implements MovieContract.Presenter {
 
     @Override
     public void loadMovies() {
-        repository.getPopularMovies(1, new MovieRepository.LoadMovieCallback() {
+        repository.getPopularMovies(1, new MovieRepository.LoadMoviesCallback() {
             @Override
-            public void onMovieLoaded(RemoteMovieRepository.MovieList movies, okhttp3.Response response) {
+            public void onMoviesLoaded(RemoteMovieRepository.MovieList movies, okhttp3.Response response) {
                 view.showMovies(movies.getResults());
                 currentResponse = response;
             }
@@ -65,9 +58,9 @@ public class MoviePresenter implements MovieContract.Presenter {
 
     @Override
     public void searchByTitle(String title) {
-        repository.getMoviesByQuery(title, new MovieRepository.LoadMovieCallback() {
+        repository.getMoviesByQuery(title, new MovieRepository.LoadMoviesCallback() {
             @Override
-            public void onMovieLoaded(RemoteMovieRepository.MovieList movies, okhttp3.Response response) {
+            public void onMoviesLoaded(RemoteMovieRepository.MovieList movies, okhttp3.Response response) {
                 view.showMovies(movies.getResults());
                 currentResponse = response;
             }
@@ -75,6 +68,21 @@ public class MoviePresenter implements MovieContract.Presenter {
             @Override
             public void onError() {
                 view.setEmpty();
+            }
+        });
+    }
+
+    @Override
+    public void loadMovie(String movieId) {
+        repository.getMovie(movieId, new MovieRepository.MovieCallback() {
+            @Override
+            public void onMovieLoaded(Movie movie) {
+                view.showMovie(movie);
+            }
+
+            @Override
+            public void onError() {
+                view.setError("No video found");
             }
         });
     }

@@ -7,7 +7,6 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.List;
 
-import io.github.dmi3coder.moviemo.Moviemo;
 import io.github.dmi3coder.moviemo.data.Genre;
 import io.github.dmi3coder.moviemo.data.Movie;
 import io.github.dmi3coder.moviemo.data.source.MovieRepository;
@@ -16,18 +15,22 @@ import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public class RemoteMovieRepository extends RemoteBaseRepository implements MovieRepository {
     private static RemoteMovieRepository instance;
+    private  RemoteGenreRepository genreRepository;
     private MovieService service;
     private static final String TAG = "RemoteMovieRepository";
+    private List<Genre> genres;
     private interface MovieService {
         @GET("movie/popular")
         Call<MovieList> getPopularMovies(@Query("page") Integer page);
         @GET("search/movie")
         Call<MovieList> getMovies(@Query("query") String query,@Query("page") Integer page);
+        @GET("movie/{movieId}")
+        Call<Movie> getMovie(@Path("movieId") String movieId);
 
     }
 
@@ -43,11 +46,12 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
     private RemoteMovieRepository() {
         super();
         service = retrofit.create(MovieService.class);
+        genreRepository = RemoteGenreRepository.getInstance();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void getPopularMovies(final int page, @NonNull final LoadMovieCallback callback) {
+    public void getPopularMovies(final int page, @NonNull final LoadMoviesCallback callback) {
         new AsyncTask<Void,Void,Response<MovieList>>() {
             @Override
             protected Response<MovieList> doInBackground(Void... params) {
@@ -69,7 +73,7 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
                     callback.onError();
                     return;
                 }
-                callback.onMovieLoaded(response.body(),response.raw());
+                callback.onMoviesLoaded(response.body(),response.raw());
             }
         }.execute();
 
@@ -77,12 +81,12 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
     }
 
     @Override
-    public void getMoviesByGenre(Genre genre, @NonNull LoadMovieCallback callback) {
+    public void getMoviesByGenre(Genre genre, @NonNull LoadMoviesCallback callback) {
 
     }
 
     @Override
-    public void getMoviesByQuery(final String query, @NonNull final LoadMovieCallback callback) {
+    public void getMoviesByQuery(final String query, @NonNull final LoadMoviesCallback callback) {
         new AsyncTask<Void,Void,Response<MovieList>>(){
             @Override
             protected Response<MovieList> doInBackground(Void... params) {
@@ -100,14 +104,36 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
                 if(response.body().getResults() == null){
                     callback.onError();
                 }else {
-                    callback.onMovieLoaded(response.body(),response.raw());
+                    callback.onMoviesLoaded(response.body(),response.raw());
                 }
             }
         }.execute();
     }
 
     @Override
-    public void getNextPage(final Request request, final LoadMovieCallback callback) {
+    public void getMovie(final String id, @NonNull final MovieCallback callback) {
+        new AsyncTask<Void,Void,Movie>(){
+            @Override
+            protected Movie doInBackground(Void... params) {
+                Call<Movie> call = service.getMovie(id);
+                try {
+                    Response<Movie> response = call.execute();
+                    return response.body();
+                } catch (IOException e) {
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Movie movie) {
+                if(movie == null) callback.onError();
+                else callback.onMovieLoaded(movie);
+            }
+        }.execute();
+    }
+
+    @Override
+    public void getNextPage(final Request request, final LoadMoviesCallback callback) {
         HttpUrl.Builder builder = request.url().newBuilder();
         int nextPage = Integer.parseInt(request.url().queryParameter("page"));
         builder.setQueryParameter("page",++nextPage+"");
@@ -131,7 +157,7 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
                 if(movieList == null) {
                     callback.onError();
                 }else {
-                    callback.onMovieLoaded(movieList, response);
+                    callback.onMoviesLoaded(movieList, response);
                 }
             }
         }.execute();

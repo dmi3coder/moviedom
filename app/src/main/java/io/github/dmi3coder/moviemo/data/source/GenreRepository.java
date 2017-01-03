@@ -12,6 +12,6 @@ public interface GenreRepository {
         void onGenresLoaded(List<Genre> genres);
     }
 
-    void getGenres(@NonNull LoadGenreCallback callback);
+    List<Genre> getGenres();
 
 }

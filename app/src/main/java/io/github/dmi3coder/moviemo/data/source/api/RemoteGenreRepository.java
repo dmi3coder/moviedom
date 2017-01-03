@@ -1,6 +1,7 @@
 package io.github.dmi3coder.moviemo.data.source.api;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,36 +11,39 @@ import io.github.dmi3coder.moviemo.Moviemo;
 import io.github.dmi3coder.moviemo.data.Genre;
 import io.github.dmi3coder.moviemo.data.source.GenreRepository;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.GET;
 
 public class RemoteGenreRepository extends RemoteBaseRepository implements GenreRepository {
+    private static final String TAG = "RemoteGenreRepository";
 
     private interface GenreService{
-        @GET("/genre/movie/list"+ Moviemo.API_KEY_QUERY)
+        @GET("genre/movie/list")
         Call<GenreList> loadGenres();
     }
 
     private static RemoteGenreRepository instance = null;
-    private List<Genre> genres = null;
+    private static List<Genre> genres;
     private GenreService service;
 
     private RemoteGenreRepository(){
         super();
-        instance.genres = new ArrayList<>();
+        genres = new ArrayList<>();
         service = retrofit.create(GenreService.class);
     }
 
     @Override
-    public void getGenres(@NonNull LoadGenreCallback callback) {
-        if(genres!=null && genres.size()>0) callback.onGenresLoaded(genres);
+    public List<Genre> getGenres() {
         Call<GenreList> request = service.loadGenres();
-
         try {
-            genres = request.execute().body().genres;
-            callback.onGenresLoaded(genres);
-        } catch (IOException e){
-            callback.onError();
-            e.printStackTrace();
+            Log.d(TAG, "getGenres: "+request.request().url());
+            Response<GenreList> response = request.execute();
+            Log.d(TAG, "doInBackground: "+response.raw().toString());
+            genres = response.body().genres;
+            return genres;
+        } catch (Exception e){
+            Log.d(TAG, "getGenres: "+e);
+            return null;
         }
     }
 
@@ -47,12 +51,11 @@ public class RemoteGenreRepository extends RemoteBaseRepository implements Genre
     public static RemoteGenreRepository getInstance() {
         if(instance == null){
             instance = new RemoteGenreRepository();
-
         }
         return instance;
     }
 
-    private class GenreList{
+    public class GenreList{
 
         private List<Genre> genres;
 
