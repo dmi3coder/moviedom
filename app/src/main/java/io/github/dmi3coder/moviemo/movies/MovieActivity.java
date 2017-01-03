@@ -8,17 +8,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import io.github.dmi3coder.moviemo.R;
 
 public class MovieActivity extends AppCompatActivity {
     MoviePresenter presenter;
     FloatingActionButton searchButton;
+    private TextView toolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         MovieListFragment fragment = new MovieListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_movie,fragment,"tag").commit();
         presenter = new MoviePresenter(fragment);
@@ -36,7 +39,12 @@ public class MovieActivity extends AppCompatActivity {
                         .setPositiveButton("Search", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                presenter.searchByTitle(input.getText().toString());
+                                String text = input.getText().toString();
+                                if(text.isEmpty()) {
+                                    presenter.loadMovies();
+                                    toolbarTitle.setText("MOVIEMO");
+                                }
+                                else presenter.searchByTitle(input.getText().toString());
                             }
                         })
                         .setTitle("Search movies")

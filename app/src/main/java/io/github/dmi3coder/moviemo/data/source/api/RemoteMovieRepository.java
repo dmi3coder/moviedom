@@ -101,7 +101,7 @@ public class RemoteMovieRepository extends RemoteBaseRepository implements Movie
 
             @Override
             protected void onPostExecute(Response<MovieList> response) {
-                if(response.body().getResults() == null){
+                if(response == null || response.body() == null || response.body().getResults() == null){
                     callback.onError();
                 }else {
                     callback.onMoviesLoaded(response.body(),response.raw());

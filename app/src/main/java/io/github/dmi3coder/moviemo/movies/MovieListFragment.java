@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +22,11 @@ import io.github.dmi3coder.moviemo.description.DescriptionActivity;
 public class MovieListFragment extends Fragment implements MovieContract.View {
     private static final String TAG = "MovieListFragment";
     private RecyclerView recyclerView;
-    private TextView emptyText;
+    private View emptyView;
     private LinearLayoutManager manager;
     private MovieAdapter adapter;
     private boolean loading = false;
+    private boolean moreAvailable = true;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private MovieContract.Presenter presenter;
     private ProgressDialog progressDialog;
@@ -36,7 +36,7 @@ public class MovieListFragment extends Fragment implements MovieContract.View {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_movies,container,false);
         recyclerView = (RecyclerView) v.findViewById(R.id.list);
-        emptyText = (TextView) v.findViewById(R.id.text_empty);
+        emptyView = (View) v.findViewById(R.id.view_empty);
 
         progressDialog = new ProgressDialog(getContext(),ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
@@ -55,7 +55,7 @@ public class MovieListFragment extends Fragment implements MovieContract.View {
 
                     totalItemCount = manager.getItemCount();
                     pastVisiblesItems = manager.findFirstVisibleItemPosition();
-                    if (!loading) {
+                    if (!loading && moreAvailable) {
                         if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                             loading = true;
                             presenter.loadMore();
@@ -75,6 +75,10 @@ public class MovieListFragment extends Fragment implements MovieContract.View {
 
     @Override
     public void showMovies(List<Movie> movies) {
+        if(movies.size()==0){
+            setEmpty();
+            return;
+        }
         adapter.movies = movies;
         adapter.notifyDataSetChanged();
         progressDialog.cancel();
@@ -89,13 +93,14 @@ public class MovieListFragment extends Fragment implements MovieContract.View {
     @Override
     public void setEmpty() {
         recyclerView.setVisibility(View.GONE);
-        emptyText.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void setError(String error) {
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
         progressDialog.cancel();
+        moreAvailable = false;
     }
 
     @Override
@@ -105,7 +110,7 @@ public class MovieListFragment extends Fragment implements MovieContract.View {
 
     private void resetVisibility(){
         recyclerView.setVisibility(View.VISIBLE);
-        emptyText.setVisibility(View.GONE);
+        emptyView.setVisibility(View.GONE);
 
     }
 
@@ -121,6 +126,9 @@ public class MovieListFragment extends Fragment implements MovieContract.View {
 
     @Override
     public void addMoreMovies(List<Movie> moviesToAdd) {
+        if(moviesToAdd.size() == 0){
+            moreAvailable = false;
+        }
         adapter.movies.addAll(moviesToAdd);
         adapter.notifyDataSetChanged();
         loading = false;

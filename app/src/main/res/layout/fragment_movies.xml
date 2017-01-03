@@ -7,11 +7,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/list"/>
-    <TextView
-        android:id="@+id/text_empty"
-        android:visibility="gone"
+    <LinearLayout
+        android:id="@+id/view_empty"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Something went wrong :("/>
+        android:text="Something went wrong :("
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/ic_empty_list"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="There's nothing on your request"/>
+        </LinearLayout>
+
 
 </FrameLayout>
