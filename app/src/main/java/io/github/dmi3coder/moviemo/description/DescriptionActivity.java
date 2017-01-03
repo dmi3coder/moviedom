@@ -39,7 +39,7 @@ public class DescriptionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie);
+        setContentView(R.layout.activity_movie);;
         movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         posterImage = (ImageView) findViewById(R.id.image);
@@ -54,16 +54,7 @@ public class DescriptionActivity extends AppCompatActivity {
         }catch (Exception e){
 
         }
-
-        toolbar.setTitle(movie.getTitle());
-        toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        setTitle(movie.getTitle());
         Glide.with(this).load("http://image.tmdb.org/t/p/w500/"+movie.getPosterPath()).into(posterImage);
         if(movie.getAdult()) adultText.setVisibility(View.VISIBLE);
         overviewText.setText(movie.getOverview());
