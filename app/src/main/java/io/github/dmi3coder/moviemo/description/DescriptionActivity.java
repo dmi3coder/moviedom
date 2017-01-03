@@ -49,10 +49,10 @@ public class DescriptionActivity extends AppCompatActivity {
         budgetText = (TextView) findViewById(R.id.budget);
         languageText = (TextView) findViewById(R.id.language);
         genreText = (TextView) findViewById(R.id.genre);
-        try {
-            genreText.setText(movie.getGenres().get(0).getName());
-        }catch (Exception e){
-
+        if(movie.getGenres().get(0).getName() != null){
+        genreText.setText(movie.getGenres().get(0).getName());
+        }else{
+            genreText.setVisibility(View.GONE);
         }
         setTitle(movie.getTitle());
         Glide.with(this).load("http://image.tmdb.org/t/p/w500/"+movie.getPosterPath()).into(posterImage);
